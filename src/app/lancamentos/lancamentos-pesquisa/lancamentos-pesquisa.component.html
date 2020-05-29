@@ -1,0 +1,88 @@
+<div class="container">
+
+  <p-toast></p-toast>
+  <p-confirmDialog
+    header="Confirmação"
+    icon="pi pi-trash">
+  </p-confirmDialog>
+
+  <form autocomplete="off" (ngSubmit)="pesquisar()">
+    <div class="ui-g">
+
+      <div class="ui-g-12">
+        <h1>Lançamentos</h1>
+      </div>
+
+      <div class="ui-g-12">
+        <p-toolbar>
+          <div class="ui-toolbar-group-left">
+            <button pButton type="submit" label="Pesquisar" icon="pi pi-search"></button>
+          </div>
+
+          <div class="ui-toolbar-group-right">
+            <button pButton type="button" label="Novo" icon="pi pi-plus" class="ui-button-success" routerLink="/lancamentos/novo"></button>
+          </div>
+
+        </p-toolbar>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+        <label>Descrição</label>
+        <input type="text" pInputText  [(ngModel)]="filtro.descricao" name="descricao"  />
+      </div>
+
+      <div class="ui-g-12">
+        <label style="display: block">Vencimento</label>
+        <p-calendar dateFormat="dd/mm/yy" [(ngModel)]="filtro.dataVencimentoDe" [readonlyInput]="true" showButtonBar="true" name="dataVencimentoDe" [showIcon]="true"></p-calendar>
+
+        <label>até</label>
+        <p-calendar dateFormat="dd/mm/yy"  [(ngModel)]="filtro.dataVencimentoAte" [readonlyInput]="true" showButtonBar="true" name="dataVencimentoAte" [showIcon]="true"></p-calendar>
+      </div>
+
+    </div>
+
+    <div class="ui-g">
+
+      <div class="ui-g-12">
+
+        <p-table #tabela [value]="lancamentos" [responsive]="true" [paginator]="true" [rows]="filtro.itensPorPagina"
+          [lazy]="true" [totalRecords]="total"  (onLazyLoad)="aoMudarPagina($event)" >
+          <ng-template pTemplate="header">
+              <tr>
+                  <th>Pessoa</th>
+                  <th>Descricao</th>
+                  <th class="col-data-header">Vencimento</th>
+                  <th class="col-data-header">Pagamento</th>
+                  <th class="col-valor-header">Valor</th>
+                  <th class="col-acoes" >Ações</th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-lancamento>
+              <tr>
+                  <td>{{ lancamento.pessoa }}</td>
+                  <td>{{ lancamento.descricao }}</td>
+                  <td class="col-data-content">{{ lancamento.dataVencimento | date:'dd/MM/yyyy' }}</td>
+                  <td class="col-data-content">{{ lancamento.dataPagamento }}</td>
+                  <td class="col-valor-content" [ngStyle]="{ color: lancamento.tipo === 'DESPESA' ? 'red' : 'blue' }" >{{ lancamento.valor | number:'1.2-2' }}</td>
+                  <td class="col-acoes">
+                    <a pButton icon="pi pi-pencil" style="margin-right: 3px;" pTooltip="Alterar" tooltipPosition="top"
+                      [routerLink]="['/lancamentos', lancamento.codigo]" ></a>
+                    <button pButton icon="pi pi-trash"  pTooltip="Excluir" tooltipPosition="top" (click)="excluir(lancamento)" ></button>
+                  </td>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+                <td [attr.colspan]="6">
+                    Sem registros
+                </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+
+    </div>
+  </form>
+</div>
+

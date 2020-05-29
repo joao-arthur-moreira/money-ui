@@ -1,0 +1,83 @@
+<div class="container">
+  <p-toast></p-toast>
+  <form #f="ngForm" (ngSubmit)="salvar(f)" autocomplete="off">
+    <div class="ui-g">
+
+      <div class="ui-g-12">
+        <h1>Nova Pessoa</h1>
+      </div>
+
+      <div class="ui-g-12">
+        <p-toolbar>
+          <div class="ui-toolbar-group-left">
+            <button pButton type="submit" label="Salvar" icon="pi pi-save" style="margin-right: 4px;" ></button>
+            <button pButton type="button" label="Novo" icon="pi pi-plus" class="ui-button-success"></button>
+          </div>
+
+          <div class="ui-toolbar-group-right">
+            <button pButton type="button" icon="pi pi-search" pTooltip="Voltar para página de pesquisa" routerLink="/pessoas" tooltipPosition="top"></button>
+          </div>
+
+        </p-toolbar>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <label>Nome</label>
+          <input pInputText type="text" name="nome" [(ngModel)]="pessoa.nome" >
+        </div>
+
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+
+        <div class="ui-g-12 ui-md-9 ui-lg-9">
+          <label>Logradouro</label>
+          <input pInputText type="text" name="logradouro" [(ngModel)]="pessoa.logradouro" >
+        </div>
+
+        <div class="ui-g-12 ui-md-3 ui-lg-3">
+          <label>Numero</label>
+          <input pInputText type="text" name="numero" [(ngModel)]="pessoa.numero" >
+        </div>
+
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+
+        <div class="ui-g-12 ui-md-4 ui-lg-4">
+          <label>Complemento</label>
+          <input pInputText type="text" name="complemento" [(ngModel)]="pessoa.complemento" >
+        </div>
+
+        <div class="ui-g-12 ui-md-4 ui-lg-4">
+          <label>Bairro</label>
+          <input pInputText type="text" name="bairro" [(ngModel)]="pessoa.bairro">
+        </div>
+
+        <div class="ui-g-12 ui-md-4 ui-lg-4">
+          <label>CEP</label>
+          <!-- <input pInputText type="text"> -->
+          <p-inputMask mask="99.999-999"  name="cep" [(ngModel)]="pessoa.cep" ></p-inputMask>
+        </div>
+
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+
+        <div class="ui-g-12 ui-md-6 ui-lg-6">
+          <label>Cidade</label>
+          <input pInputText type="text" name="cidade" [(ngModel)]="pessoa.cidade">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-lg-6">
+          <label>Estado</label>
+          <input pInputText type="text" name="estado" [(ngModel)]="pessoa.estado">
+        </div>
+
+      </div>
+
+    </div>
+  </form>
+</div>
