@@ -23,6 +23,8 @@ export class ErrorHandlerService {
         msg = 'O recurso solicitado não foi encontrado no servidor.';
       } else if (errorResponse.status === 401) {
         msg = 'Ocorreu um erro de autenticação, verifique os dados de login!';
+      } else if (errorResponse.status === 403) {
+        msg = 'Acesso negado!';
       }
       // código de referência caso a API implemente uma respota de erro customizada
       /* try {

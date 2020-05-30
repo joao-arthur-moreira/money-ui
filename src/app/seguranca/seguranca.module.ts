@@ -1,3 +1,4 @@
+import { MoneyHttpInterceptorService } from './money-http-interceptor.service';
 import { ToastModule } from 'primeng/components/toast/toast';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -9,6 +10,8 @@ import { InputTextModule } from 'primeng/components/inputtext/inputtext';
 import { ButtonModule } from 'primeng/components/button/button';
 
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthGuard } from './auth.guard';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token');
@@ -34,6 +37,14 @@ export function tokenGetter(): string {
 
     SegurancaRoutingModule
   ],
-  providers: [JwtHelperService]
+  providers: [
+    JwtHelperService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MoneyHttpInterceptorService,
+      multi: true
+    },
+    AuthGuard
+  ]
 })
 export class SegurancaModule { }
