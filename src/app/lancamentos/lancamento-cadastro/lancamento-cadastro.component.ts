@@ -63,7 +63,7 @@ export class LancamentoCadastroComponent implements OnInit {
     }
 
     this.listarCategorias();
-    this.listarPessoas();
+    // this.listarPessoas(); TODO: ajustar a consulta no service pois mudei a API
   }
 
   buscarPorCodigo(codigo: string) {

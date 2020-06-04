@@ -16,7 +16,7 @@ export class LancamentosPesquisaComponent implements OnInit {
   lancamentos = [];
   total = 0;
   filtro = new LancamentoFiltro();
-  @ViewChild('tabela') grid: Table;
+  @ViewChild('tabela', { static: true }) grid: Table;
 
   // angular 8 @ViewChild('tabela', {static: true}) grid: Table;
 
