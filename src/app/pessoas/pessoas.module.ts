@@ -19,6 +19,9 @@ import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { InputMaskModule } from 'primeng/components/inputmask/inputmask';
 import { ToastModule } from 'primeng/components/toast/toast';
 import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
+import { PanelModule } from 'primeng/components/panel/panel';
+import {TabViewModule} from 'primeng/tabview';
+import { DialogModule } from 'primeng/dialog';
 
 import { RouterModule } from '@angular/router';
 import { PessoasRoutingModule } from './pessoas-routing.module';
@@ -45,7 +48,10 @@ import { PessoasRoutingModule } from './pessoas-routing.module';
     DropdownModule,
     InputMaskModule,
     ToastModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    PanelModule,
+    TabViewModule,
+    DialogModule
   ],
   exports: []
 })

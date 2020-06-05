@@ -1,5 +1,9 @@
 <div class="container">
   <p-toast></p-toast>
+  <p-confirmDialog
+    header="Confirmação"
+    icon="pi pi-trash">
+  </p-confirmDialog>
   <form #f="ngForm" (ngSubmit)="salvar(f)" autocomplete="off">
     <div class="ui-g">
 
@@ -10,7 +14,7 @@
       <div class="ui-g-12">
         <p-toolbar>
           <div class="ui-toolbar-group-left">
-            <button pButton type="submit" label="Salvar" icon="pi pi-save" style="margin-right: 4px;" ></button>
+            <button pButton type="submit" label="Salvar" [disabled]="f.invalid" icon="pi pi-save" style="margin-right: 4px;" ></button>
             <button pButton type="button" label="Novo" icon="pi pi-plus" class="ui-button-success"></button>
           </div>
 
@@ -34,12 +38,12 @@
 
         <div class="ui-g-12 ui-md-9 ui-lg-9">
           <label>Logradouro</label>
-          <input pInputText type="text" name="logradouro" [(ngModel)]="pessoa.logradouro" >
+          <input pInputText type="text" name="logradouro" [(ngModel)]="pessoa.endereco.logradouro" >
         </div>
 
         <div class="ui-g-12 ui-md-3 ui-lg-3">
           <label>Numero</label>
-          <input pInputText type="text" name="numero" [(ngModel)]="pessoa.numero" >
+          <input pInputText type="text" name="numero" [(ngModel)]="pessoa.endereco.numero" >
         </div>
 
       </div>
@@ -48,18 +52,18 @@
 
         <div class="ui-g-12 ui-md-4 ui-lg-4">
           <label>Complemento</label>
-          <input pInputText type="text" name="complemento" [(ngModel)]="pessoa.complemento" >
+          <input pInputText type="text" name="complemento" [(ngModel)]="pessoa.endereco.complemento" >
         </div>
 
         <div class="ui-g-12 ui-md-4 ui-lg-4">
           <label>Bairro</label>
-          <input pInputText type="text" name="bairro" [(ngModel)]="pessoa.bairro">
+          <input pInputText type="text" name="bairro" [(ngModel)]="pessoa.endereco.bairro">
         </div>
 
         <div class="ui-g-12 ui-md-4 ui-lg-4">
           <label>CEP</label>
           <!-- <input pInputText type="text"> -->
-          <p-inputMask mask="99.999-999"  name="cep" [(ngModel)]="pessoa.cep" ></p-inputMask>
+          <p-inputMask mask="99.999-999"  name="cep" [(ngModel)]="pessoa.endereco.cep" ></p-inputMask>
         </div>
 
       </div>
@@ -67,17 +71,140 @@
       <div class="ui-g-12 ui-fluid">
 
         <div class="ui-g-12 ui-md-6 ui-lg-6">
-          <label>Cidade</label>
-          <input pInputText type="text" name="cidade" [(ngModel)]="pessoa.cidade">
+          <label>Estado</label>
+          <p-dropdown
+            [options]="estados"
+            [filter]="true"
+            placeholder="Selecione..."
+            name="codigoEstado"
+            (onChange)="carregarCidades()"
+            #estado="ngModel"
+            required
+            [(ngModel)]="codigoEstado">
+          </p-dropdown>
+          <app-message
+            [control]="estado"
+            error="required"
+            text="Informe o estado">
+          </app-message>
         </div>
 
         <div class="ui-g-12 ui-md-6 ui-lg-6">
-          <label>Estado</label>
-          <input pInputText type="text" name="estado" [(ngModel)]="pessoa.estado">
+          <label>Cidade</label>
+          <p-dropdown
+            [options]="cidades"
+            [filter]="true"
+            placeholder="Selecione..."
+            [disabled]="!codigoEstado"
+            [(ngModel)]="pessoa.endereco.cidade.codigo"
+            #cidade="ngModel"
+            required
+            name="cidades">
+          </p-dropdown>
+          <app-message
+            [control]="cidade"
+            error="required"
+            text="Informe a cidade">
+          </app-message>
         </div>
 
+      </div>
+
+      <div class="ui-g-12">
+        <p-tabView>
+          <p-tabPanel header="Contatos">
+            <div class="ui-g">
+              <div class="ui-g-12">
+                <button pButton label="Novo" icon="pi pi-plus" type="button"
+                  class="ui-button-secondary ui-button-raised" (click)="prepararNovoContato()"></button>
+              </div>
+              <div class="ui-g-12">
+                <p-table [value]="pessoa.contatos" [responsive]="true">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Nome</th>
+                      <th>E-mail</th>
+                      <th>Telefone</th>
+                      <th class="col-acoes-header">#</th>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="body" let-contato let-rowIndex="rowIndex">
+                    <tr>
+                      <td>{{ contato.nome }}</td>
+                      <td>{{ contato.email }}</td>
+                      <td>{{ contato.telefone }}</td>
+                      <td class="col-acoes">
+                        <button pButton icon="pi pi-pencil" pTooltip="Editar" type="button" style="margin-right: 3px;"
+                          tooltipPosition="top" (click)="prepararEdicaoContato(contato, rowIndex)"></button>
+
+                        <button pButton icon="pi pi-trash" type="button" (click)="removerContato(rowIndex)"
+                          class="ui-button-danger" pTooltip="Excluir" tooltipPosition="top"></button>
+                      </td>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="4">
+                        Nenhum contato cadastrado
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+         </p-tabPanel>
+
+         <p-tabPanel header="Endereços">
+
+         </p-tabPanel>
+
+         <p-tabPanel header="Formas de pagamento">
+
+          </p-tabPanel>
+
+          <p-tabPanel header="Clientes">
+
+          </p-tabPanel>
+        </p-tabView>
       </div>
 
     </div>
   </form>
 </div>
+
+<p-dialog header="Novo Contato" [(visible)]="exbindoFormularioContato"
+  modal="modal" *ngIf="contato">
+  <form #frmContato="ngForm" (ngSubmit)="confirmarContato(frmContato)">
+    <div class="ui-g-12 ui-fluid">
+      <label>Nome</label>
+
+      <input pInputText type="text" name="nome"
+        required [(ngModel)]="contato.nome" #contatoNome="ngModel"/>
+
+      <app-message [control]="contatoNome" error="required" text="Informe o nome"></app-message>
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+        <label>E-mail</label>
+
+        <input pInputText type="email" name="email"
+          required email [(ngModel)]="contato.email" #contatoEmail="ngModel"/>
+
+        <app-message [control]="contatoEmail" error="required" text="Informe o email"></app-message>
+        <app-message [control]="contatoEmail" error="email" text="Informe um e-mail válido"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+          <label>Telefone</label>
+
+          <p-inputMask name="telefone" [(ngModel)]="contato.telefone"
+            mask="(99) 99999-999?9"></p-inputMask>
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Confirmar" [disabled]="frmContato.invalid"></button>
+      </div>
+  </form>
+</p-dialog>

@@ -1,4 +1,5 @@
-import { PessoaInput } from './../core/model';
+import { environment } from './../../environments/environment';
+import { PessoaInput, Estado, Cidade } from './../core/model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -13,7 +14,8 @@ export class PessoaFiltro {
 })
 export class PessoaService {
 
-  pessoasURL = 'http://localhost:8080/pessoas';
+  pessoasURL =  `${environment.apiUrl}/pessoas`;
+  estadosURL =  `${environment.apiUrl}/estados`;
 
   constructor(private http: HttpClient) { }
 
@@ -34,9 +36,27 @@ export class PessoaService {
       .toPromise();
   }
 
+  listarEstados(): Promise<Estado[]> {
+    return this.http.get(this.estadosURL)
+      .toPromise()
+      .then(estados => estados as Estado[]);
+  }
+
+  listarCidadesPorEstado(codigoEstado: number): Promise<Cidade[]> {
+    return this.http.get(`${this.estadosURL}/${codigoEstado}/cidades`)
+      .toPromise()
+      .then(cidades => cidades as Cidade[]);
+  }
+
   listarTodas(): Promise<any> {
     return this.http.get(this.pessoasURL)
       .toPromise();
+  }
+
+  buscarPorCodigo(codigo: number): Promise<PessoaInput> {
+    return this.http.get(`${this.pessoasURL}/${codigo}`)
+      .toPromise()
+      .then(response => response as PessoaInput);
   }
 
   excluir(codigo: string): Promise<void> {
@@ -52,10 +72,16 @@ export class PessoaService {
       .then(() => null);
   }
 
-  adicionar(pessoa: PessoaInput): Promise<void> {
+  adicionar(pessoa: PessoaInput): Promise<PessoaInput> {
     return this.http.post(this.pessoasURL, pessoa)
       .toPromise()
-      .then(() => null);
+      .then(response => response as PessoaInput);
+  }
+
+  atualizar(pessoa: PessoaInput): Promise<PessoaInput> {
+    return this.http.put(`${this.pessoasURL}/${pessoa.codigo}`, pessoa)
+      .toPromise()
+      .then(response => response as PessoaInput);
   }
 
 }

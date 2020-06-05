@@ -10,7 +10,7 @@
       <div class="ui-g-12">
         <p-toolbar>
           <div class="ui-toolbar-group-left">
-            <button pButton type="submit" label="Salvar" icon="pi pi-save" style="margin-right: 4px;" ></button>
+            <button pButton type="submit" label="Salvar" icon="pi pi-save" style="margin-right: 4px;" [disabled]="f.invalid || uploadEmAndamento" ></button>
             <button pButton type="button"  (click)="novo(f)" label="Novo" icon="pi pi-plus" class="ui-button-success"></button>
           </div>
 
@@ -91,6 +91,28 @@
           <textarea pInputTextarea rows="3"></textarea>
         </div>
 
+      </div>
+
+      <div class="ui-g-6 ui-g-offset-6 ui-md-2 ui-md-offset-10 ui-fluid">
+        <p-fileUpload name="anexo" mode="basic" auto="true" maxFileSize="100000000"
+          chooseLabel="Anexar" chooseIcon="pi pi-cloud-upload" uploadIcon="pi pi-cloud-upload" accept="image/*,application/*"
+          [hidden]="uploadEmAndamento || lancamento.anexo"
+          (onBeforeUpload)="antesUploadAnexo($event)" (onError)="erroUpload($event)"
+          [url]="urlUploadAnexo" (onUpload)="aoTerminarUploadAnexo($event)"></p-fileUpload>
+
+        <p-progressSpinner [hidden]="!uploadEmAndamento"
+          [style]="{ width: '25px', height: '25px' }"></p-progressSpinner>
+      </div>
+
+      <div class="ui-g-12" dir="rtl"
+          *ngIf="lancamento.anexo">
+
+        <button pButton type="button" class="ui-button-danger"
+          icon="pi pi-times-circle" pTooltip="Remover anexo" tooltipPosition="top"
+          (click)="removerAnexo()"></button>
+
+        <a target="_blank" pTooltip="Baixar anexo" tooltipPosition="top"
+          [href]="lancamento.urlAnexo">{{ nomeAnexo }}</a>
       </div>
 
     </div>

@@ -31,6 +31,7 @@ export class LancamentoCadastroComponent implements OnInit {
 
   lancamento = new Lancamento();
   codigo: string;
+  uploadEmAndamento = false;
 
   constructor(
     private categoriaService: CategoriaService,
@@ -63,7 +64,7 @@ export class LancamentoCadastroComponent implements OnInit {
     }
 
     this.listarCategorias();
-    // this.listarPessoas(); TODO: ajustar a consulta no service pois mudei a API
+    this.listarPessoas();
   }
 
   buscarPorCodigo(codigo: string) {
@@ -92,7 +93,7 @@ export class LancamentoCadastroComponent implements OnInit {
   listarPessoas() {
     this.pessoaService.listarTodas()
       .then(response => {
-        this.pessoas = response.map(p => ({ label:  p.nome, value: p.codigo}));
+        this.pessoas = response.content.map(p => ({ label:  p.nome, value: p.codigo}));
       });
   }
 
@@ -143,6 +144,57 @@ export class LancamentoCadastroComponent implements OnInit {
     }.bind(this), 1);
 
     this.router.navigate(['/lancamentos/novo']);
+  }
+
+  get urlUploadAnexo() {
+    return this.lancamentoService.urlUploadAnexo();
+  }
+
+  antesUploadAnexo(event) {
+    this.uploadEmAndamento = true;
+  }
+
+  aoTerminarUploadAnexo(event) {
+    const anexo = event.originalEvent.body;
+    console.log('Resposta anexo', anexo);
+    console.log('Nome arquivo', anexo.nomeArquivo);
+    console.log('Url', anexo.url);
+
+    this.lancamento.anexo = anexo.nomeArquivo;
+    this.lancamento.urlAnexo = anexo.url;
+
+    this.uploadEmAndamento = false;
+
+    // caso estivesse utilizando formulários reativo
+    /* this.formulario.patchValue({
+      anexo: anexo.nome,
+      urlAnexo: anexo.url
+    }); */
+  }
+
+  erroUpload(event) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Erro',
+      detail: 'Erro ao tentar enviar anexo!'
+    });
+
+    this.uploadEmAndamento = false;
+  }
+
+  removerAnexo() {
+    this.lancamento.anexo = null;
+    this.lancamento.urlAnexo = null;
+  }
+
+  get nomeAnexo() {
+    const nome = this.lancamento.anexo;
+
+    if (nome) {
+      return nome.substring(nome.indexOf('_') + 1, nome.length);
+    }
+
+    return '';
   }
 
 }

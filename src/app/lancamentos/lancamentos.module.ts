@@ -20,7 +20,8 @@ import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { InputMaskModule } from 'primeng/components/inputmask/inputmask';
 import {ToastModule} from 'primeng/components/toast/toast';
 import {ConfirmDialogModule} from 'primeng/components/confirmdialog/confirmdialog';
-// import {ConfirmationService} from 'primeng/api';
+import {FileUploadModule} from 'primeng/fileupload';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { LancamentosRoutingModule } from './lancamentos-routing.module';
@@ -51,6 +52,8 @@ import { LancamentosRoutingModule } from './lancamentos-routing.module';
     InputMaskModule,
     ToastModule,
     ConfirmDialogModule,
+    FileUploadModule,
+    ProgressSpinnerModule,
 
     CurrencyMaskModule
   ],

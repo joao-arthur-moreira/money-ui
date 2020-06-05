@@ -9,8 +9,10 @@
 
   <ul class="navbar-menu" [hidden]="!exibindoMenu" >
     <li class="navbar-usuario" >{{ auth.jwtPayload?.nome }}</li>
+    <li class="navbar-menuitem"  *ngIf="auth.temPermissao('ROLE_PESQUISAR_LANCAMENTO')" routerLinkActive="ativo" ><a routerLink="/dashboard">Dashboard</a></li>
     <li class="navbar-menuitem"  *ngIf="auth.temPermissao('ROLE_PESQUISAR_LANCAMENTO')" routerLinkActive="ativo" ><a routerLink="/lancamentos">Lançamentos</a></li>
     <li class="navbar-menuitem"  *ngIf="auth.temPermissao('ROLE_PESQUISAR_PESSOA')" routerLinkActive="ativo" ><a routerLink="/pessoas">Pessoas</a></li>
+    <li class="navbar-menuitem"  *ngIf="auth.temPermissao('ROLE_PESQUISAR_LANCAMENTO')" routerLinkActive="ativo" ><a routerLink="/relatorios/lancamentos">Relatórios</a></li>
     <li class="navbar-menuitem" (click)="auth.logout()" ><a href="#">Logout</a></li>
   </ul>
 </nav>

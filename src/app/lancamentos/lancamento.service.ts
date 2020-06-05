@@ -68,4 +68,8 @@ export class LancamentoService {
       .toPromise();
   }
 
+  urlUploadAnexo(): string {
+    return `${this.lancamentosURL}/anexo`;
+  }
+
 }
