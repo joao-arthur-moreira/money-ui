@@ -1,0 +1,5 @@
+Criar a imagem:
+sudo docker build -t joaoajm/ubuntu-nginx-money-ui:0.1 .
+
+Acessando o host do container docker na hora de subir o container
+docker container run --net=host minha-imagem
